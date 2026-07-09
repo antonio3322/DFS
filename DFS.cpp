@@ -23,18 +23,15 @@ void DFS2(vector<vector<int>>& G, vector<int>& Mark, int pos_x, int pos_y,
         int neighbor = G[pos_x][i];
 
         if (Mark[neighbor] == 0) {
-            // Рекурсивно обходим непосещённого соседа
             DFS2(G, Mark, neighbor, pos_x, st, flag);
         }
         else if (Mark[neighbor] == 1 && neighbor != pos_y) {
-            // Нашли обратное ребро (цикл!)
             st.push(neighbor);
             flag = true;
             return;
         }
     }
 
-    // Если цикл не найден, удаляем вершину из стека
     if (!flag) {
         st.pop();
     }
@@ -48,7 +45,6 @@ int main() {
 
     vector<vector<int>> G(n + 1);
 
-    cout << "Введите рёбра (a b):\n";
     for (int i = 0; i < m; i++) {
         int a, b;
         cin >> a >> b;
@@ -88,9 +84,9 @@ int main() {
         }
     }
 
-    cout << "Количество компонентов связности: " << count << endl;
+    cout << count << endl;
     for (int i = 0; i < Components.size(); i++) {
-        cout << "Компонент " << i + 1 << " (размер " << Components[i].size() << "): ";
+        cout << "Компонента " << i + 1 << " (размером " << Components[i].size() << "): ";
         for (int v : Components[i]) {
             cout << v << " ";
         }
@@ -102,7 +98,6 @@ int main() {
     bool cycleFound = false;
     vector<int> Cycle;
 
-    // Запускаем DFS2 из каждой непосещённой вершины
     for (int start = 1; start <= n && !cycleFound; start++) {
         if (MarkCycle[start] == 0) {
             DFS2(G, MarkCycle, start, -1, st, cycleFound);
@@ -111,18 +106,15 @@ int main() {
 
     if (cycleFound) {
         cout << "Цикл существует" << endl;
-
-        / Копируем стек в вектор
-            vector<int> temp;
+        vector<int> temp;
         while (!st.empty()) {
             temp.push_back(st.top());
             st.pop();
         }
 
-        // Выводим с конца 
         for (int i = temp.size() - 1; i >= 0; i--) {
             cout << temp[i];
-            if (i > 0) cout << " -> ";
+            if (i > 0) cout << " => ";
         }
         cout << endl;
 
@@ -134,7 +126,7 @@ int main() {
         cout << endl;
         cout << "Длина цикла: " << Cycle.size() - 1 << " рёбер" << endl;
 
-        cout << "Вершины в цикле: ";
+        cout << "Вершины: ";
         for (int i = 0; i < Cycle.size(); i++) {
             cout << Cycle[i] << " ";
         }
